@@ -1,5 +1,5 @@
 local function level_adjusted_multiplier(multiplier, level)
-  if settings.global["long-science-ignore-level-bonus"].value then return false end
+  if settings.global["long-science-ignore-level-bonus"].value then return multiplier end
   local int = math.floor(multiplier)
   local frac = multiplier - int
   return int + frac / level 
@@ -20,7 +20,6 @@ local function apply_multiplier()
             change = level_adjusted_multiplier(settings.global["long-science-normal-multiplier"].value, tech.level or 1)
         end
         mul = mul * change
-        -- game.print("[technology="..tech.name.."]: x"..change.." = "..mul)
         ::next::
     end
 

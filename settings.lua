@@ -1,5 +1,4 @@
 data:extend({
-    
     {
         type = "bool-setting",
         name = "long-science-exclude-basic-techs",

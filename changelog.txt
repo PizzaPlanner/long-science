@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------------------------------
+Version: 1.0.1
+Date: 11. 11. 2025
+  Bugfixes:
+    - Fixed error when using "Disable Level bonus" setting
