@@ -1,0 +1,10 @@
+{
+    "name": "zz-long-science",
+    "description": "Progressively increases difficulty by increasing science cost each time a technology is unlocked. Multiple settings to control which technologies affect the cost curve by how much. Allows science multipliers exceeding 1000x.",
+    "homepage": "https://github.com/PizzaPlanner/long-science",
+    "version": "1.0.0",
+    "title": "Research Reimangined",
+    "factorio_version": "2.0",
+    "author": "PizzaPlanner",    
+    "dependencies": ["space-age", "base >= 2.0.60"]
+}
