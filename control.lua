@@ -29,7 +29,7 @@ local function apply_multiplier()
     if old ~= new then
         for _, player in pairs(game.players) do
             if player.mod_settings["long-science-log-current"].value then
-                player.print("[item=science] Cost multiplier changed: "..old * base.." -> "..new * base .. " (x"..new/old..")")
+                player.print(string.format("[item=science] Cost multiplier changed: %.2f -> %.2f (x%.2f)", old * base, new * base, new/old))
             end
         end
     end

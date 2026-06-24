@@ -1,5 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.0.0
+Date: 2026-06-24
+  Changes:
+    - Updated to Factorio 2.1
+    - Improved number formatting on info message
+---------------------------------------------------------------------------------------------------
 Version: 1.0.1
-Date: 11. 11. 2025
+Date: 2025-11-11
   Bugfixes:
     - Fixed error when using "Disable Level bonus" setting
