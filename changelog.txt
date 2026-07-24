@@ -1,4 +1,11 @@
 ---------------------------------------------------------------------------------------------------
+Version: 2.99.0
+Date: 2026-07-22
+  Changes:
+    - No longer scales technology costs due to new native max multiplier of 100000
+    - Maximum multiplier is now a runtime setting, capped at 100000
+    - Added GUI to keep track of some stats around technologies
+---------------------------------------------------------------------------------------------------
 Version: 2.0.0
 Date: 2026-06-24
   Changes:

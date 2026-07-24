@@ -1,0 +1,1 @@
+storage.records = storage.records or { }

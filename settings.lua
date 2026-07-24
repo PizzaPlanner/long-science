@@ -1,5 +1,15 @@
 data:extend({
     {
+        type = "double-setting",
+        name = "long-science-base-max-multiplier-override",
+        setting_type = "startup",
+        default_value = 100000,
+        minimum_value = 1,
+        maximum_value = 1000000,
+        allow_blank = false,
+        hidden = true -- deprecated, used for migration only
+    },
+    {
         type = "bool-setting",
         name = "long-science-exclude-basic-techs",
         setting_type = "runtime-global",
@@ -22,18 +32,18 @@ data:extend({
     },
     {
         type = "double-setting",
-        name = "long-science-base-max-multiplier-override",
-        setting_type = "startup",
+        name = "long-science-base-max-multiplier",
+        setting_type = "runtime-global",
         default_value = 100000,
         minimum_value = 1,
-        maximum_value = 1000000,
+        maximum_value = 100000,
         allow_blank = false
     },
     {
         type = "double-setting",
         name = "long-science-normal-multiplier",
         setting_type = "runtime-global",
-        default_value = 1.06,
+        default_value = 1.02,
         minimum_value = 0.8,
         maximum_value = 5,
         allow_blank = false
