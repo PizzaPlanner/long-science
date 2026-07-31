@@ -1,15 +1,5 @@
 data:extend({
     {
-        type = "double-setting",
-        name = "long-science-base-max-multiplier-override",
-        setting_type = "startup",
-        default_value = 100000,
-        minimum_value = 1,
-        maximum_value = 1000000,
-        allow_blank = false,
-        hidden = true -- deprecated, used for migration only
-    },
-    {
         type = "bool-setting",
         name = "long-science-exclude-basic-techs",
         setting_type = "runtime-global",

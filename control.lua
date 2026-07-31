@@ -1,4 +1,4 @@
-local BASE_MOD = settings.startup["long-science-base-max-multiplier-override"].value / 1000
+local BASE_MOD = 1 -- settings.startup["long-science-base-max-multiplier-override"].value / 1000
 local ui = require("gui")
 
 local function update_record(tech, tick)
@@ -6,7 +6,7 @@ local function update_record(tech, tick)
     local record = storage.records[tech.name]
     if record and progress <= record.progress then return end
     local mult_current = game.difficulty_settings.technology_price_multiplier * BASE_MOD
-    record = record or { name = tech.name, progress = 0, tick_at_start = tick, multiplier_at_start = mult_current, multiplier_average = 0, invested = 0 }
+    record = record or { name = tech.name, progress = 0, tick_at_start = tick, multiplier_at_start = nil, multiplier_average = 0, invested = 0 }
     local cost = (tech.research_unit_count or 0)
     if cost > 0 then
         local progress_step = progress - record.progress
@@ -14,6 +14,7 @@ local function update_record(tech, tick)
         record.multiplier_average = record.multiplier_average + progress_step * mult_current
     end
     record.progress = progress
+    record.multiplier_at_start = record.multiplier_at_start or (progress > 0 and mult_current)
     if progress >= 1 then
         record.tick_at_completion = tick
         record.multiplier_at_completion = mult_current
@@ -31,6 +32,7 @@ end
 local function print_multiplier_change(prev_multiplier)
     local prev = prev_multiplier and prev_multiplier * BASE_MOD
     local new = game.difficulty_settings.technology_price_multiplier * BASE_MOD
+    if prev == new then return end
     local message = prev and string.format("[item=science] Cost multiplier changed: %.2f -> %.2f (x%.2f)", prev, new, new / prev) or string.format("[item=science] Cost multiplier changed: %.2f", new)
     for _, player in pairs(game.players) do
         if player.mod_settings["long-science-log-current"].value then
@@ -46,8 +48,10 @@ local function apply_multiplier()
     local tick = game.tick
     storage.records = storage.records or { }
     for _, tech in pairs(game.forces.player.technologies) do
-        if not tech.researched and tech.saved_progress > 0 and (tech.research_unit_energy or 0) > 0 then 
-            update_record(tech, tick)
+        if not tech.researched then
+            if tech.saved_progress > 0 and (tech.research_unit_energy or 0) > 0 then 
+                update_record(tech, tick)
+            end
             goto next
         end
         if exclude_essential_techs and tech.prototype.ignore_tech_cost_multiplier then goto next end
@@ -64,12 +68,25 @@ local function apply_multiplier()
     local new = math.min(max_mul, mul)
     local old = game.difficulty_settings.technology_price_multiplier
     game.difficulty_settings.technology_price_multiplier = new
-    if old ~= new then
-        print_multiplier_change(old)
-    end
+    print_multiplier_change(old)
 
     storage.new_researches  = nil
     script.on_event(defines.events.on_tick, nil)
+end
+
+local function restore_progress()
+    local restored = { }
+    for name, data in pairs(storage.records) do
+        local tech = game.forces.player.technologies[name]
+        if tech and not tech.researched and tech.saved_progress == 0 then
+            tech.saved_progress = data.progress
+            table.insert(restored, name)
+        end
+    end
+    if #restored > 0 then
+        game.print("[item=science] Restored progress of "..#restored.." technologies")
+        apply_multiplier()
+    end
 end
 
 script.on_event(defines.events.on_runtime_mod_setting_changed, function(event)
@@ -116,6 +133,8 @@ end)
 script.on_event(defines.events.on_research_reversed, function(event)
     storage.records[event.research.name] = nil
 end)
+
+script.on_configuration_changed(restore_progress)
 
 script.on_load(register_post_apply_handler)
 
